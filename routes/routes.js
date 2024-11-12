@@ -6,6 +6,7 @@ const getPuuid = require('../controllers/getPuuid')
 const getSummonerId = require('../controllers/getSummonerId')
 const getRankProfile = require('../controllers/getRankProfile')
 const getMatches = require('../controllers/getMatches')
+const getMatch = require('../controllers/getMatch')
 
 
 //*peticion a /{gameName}/{tagInline} para obtener el puuid
@@ -24,6 +25,10 @@ router.get('/rankprofile', getRankProfile )
 //* [ LA2_8465456456, LA2_854654564, LA2_6854564564 ]
 
 router.get('/matches', getMatches )
+
+//*peticion a matches/{matchid} para tomar match en especial y analizar objeto
+
+router.get('/matchid' , getMatch )
 
 
 module.exports = router

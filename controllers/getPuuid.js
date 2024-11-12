@@ -11,7 +11,7 @@ const getPuuid = async( req, res = response ) => {
 
     res.json({
         summoner: summoner,
-        puuid: 'puuid obtenido',
+        puuid: 'puuid obtained',
         ok: true,
 
     })
