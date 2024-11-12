@@ -1,9 +1,14 @@
 const express = require('express')
+const cors = require('cors')
 require('dotenv').config()
+
 
 //?Creacion servidor Express - EspressApp
 
 const app = express()
+
+//?Habilitacion CORS
+app.use(cors())
 
 //?Directorio Publico
 
