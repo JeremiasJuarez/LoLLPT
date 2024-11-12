@@ -1,8 +1,6 @@
 const express = require('express')
 require('dotenv').config()
 
-console.log(process.env)
-
 //?Creacion servidor Express - EspressApp
 
 const app = express()
@@ -11,20 +9,14 @@ const app = express()
 
 app.use( express.static('public') )
 
+//? Lectura y parseo del body 
+//par poder hacer req.body en los controllers
+app.use( express.json() )
 
 //?Rutas
 
-// app.get('/', ( req, res ) => {
+app.use('/api', require( './routes/routes') )
 
-//     res.json({
-//         ok: true
-//     })
-
-// })
-
-
-
-apicall()
 
 //?Escuchar peticiones
 // Primer arg es el puerto en donde este corriendo el servidor ( despues se toma de .env )
