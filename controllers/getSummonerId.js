@@ -5,16 +5,32 @@ const getSummonerId = async( req, res = response ) => {
 
     const { puuid } = req.query
     
-    const url = `https://la2.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${ puuid }?api_key=${ process.env.RGAPI }`
-    const data = await fetch( url )
-    const summonerLong = await data.json()
+    try {
+        
+        const url = `https://la2.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${ puuid }?api_key=${ process.env.RGAPI }`
+        const data = await fetch( url )
+        const summonerLong = await data.json()
+        
+        if (summonerLong.status?.status_code === 400) {
+            throw new Error(summonerLong.status.message);
+        }
 
-    res.json({
-        summonerLong: summonerLong,
-        summonerId: 'summonerId obtained',
-        ok: true,
+        res.json({
+            summonerLong: summonerLong,
+            msg: 'summonerId obtained',
+            ok: true,
+        })
 
-    })
+
+    } catch (error) {
+        res.status(404).json({
+            error: error.message,
+            ok: false,
+            msg: 'summonerId not found - Invalid or non-existent puuid',
+        });
+    }
+
+
 }
 
 module.exports = getSummonerId
