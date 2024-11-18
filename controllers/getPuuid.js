@@ -23,7 +23,7 @@ const getPuuid = async( req, res = response ) => {
     
     } catch (error) {
         res.status(404).json({
-            error: error.message,
+            riotError: error.message,
             ok: false,
             msg: 'Summoner not found - invalid or non-existent gameName#tagLine',
         });
