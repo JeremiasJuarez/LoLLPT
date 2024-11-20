@@ -23,7 +23,7 @@ const getSummonerId = async( req, res = response ) => {
 
 
     } catch (error) {
-        res.status(404).json({
+        res.json({
             error: error.message,
             ok: false,
             msg: 'summonerId not found - Invalid or non-existent puuid',
