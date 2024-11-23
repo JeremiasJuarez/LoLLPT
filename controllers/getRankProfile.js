@@ -10,6 +10,9 @@ const getRankProfile = async( req, res = response ) => {
         const url = `https://la2.api.riotgames.com/lol/league/v4/entries/by-summoner/${ summonerId }?api_key=${ process.env.RGAPI }`
         const data = await fetch( url )
         const rankProfile = await data.json()
+
+        console.log( rankProfile[0])
+        console.log( rankProfile[1])
         
         if( rankProfile.length === 0 ){
             throw new Error('Summoner has not played any ranked games recently')
@@ -20,14 +23,15 @@ const getRankProfile = async( req, res = response ) => {
         }
 
         res.json({
-            rankProfile: rankProfile,
+            rankProfileSoloq: rankProfile[0],
+            rankProfileFlex: rankProfile[1],
             msg: 'rankProfile obtained',
             ok: true,
         })
 
     } catch (error) {
         res.status(404).json({
-            error: error.message,
+            riotError: error.message,
             ok: false,
             msg: 'summonerId not found - Invalid or non-existent puuid',
         });

@@ -23,7 +23,7 @@ const getMatch = async( req, res = response ) => {
     
     } catch (error) {
         res.status(404).json({
-            error: error.message,
+            riotError: error.message,
             ok: false,
             msg: 'Match id invalid or non-existent'
         })

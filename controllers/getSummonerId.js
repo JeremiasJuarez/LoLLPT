@@ -24,7 +24,7 @@ const getSummonerId = async( req, res = response ) => {
 
     } catch (error) {
         res.json({
-            error: error.message,
+            riotError: error.message,
             ok: false,
             msg: 'summonerId not found - Invalid or non-existent puuid',
         });

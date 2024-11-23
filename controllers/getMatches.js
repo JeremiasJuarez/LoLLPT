@@ -30,7 +30,7 @@ const getMatches = async( req, res = response ) => {
 
         if( error.message === 'Summoner has not played any games recently'){
             res.status(404).json({
-                error: error.message,
+                riotError: error.message,
                 ok: false,
                 msg: 'Summoner exist but has not played any games recently'
             })
