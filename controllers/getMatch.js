@@ -11,8 +11,8 @@ const getMatch = async( req, res = response ) => {
         const data = await fetch( url )
         const match = await data.json()
         
-        if( match.status?.status_code === 404 ){
-            throw new Error( match.status.message)
+        if( data.status === 404 ){
+            throw new Error( match.status?.message || 'Data not found - match file not found')
         }
 
         res.json({

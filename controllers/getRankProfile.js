@@ -12,11 +12,15 @@ const getRankProfile = async( req, res = response ) => {
         const rankProfile = await data.json()
         
         if( rankProfile.length === 0 ){
-            throw new Error('Summoner has not played any ranked games recently')
+            return res.json({
+                rankProfile: [],
+                msg: 'Summoner exists but has not played any ranked games recently',
+                ok: true,
+            });
         }
 
-        if (rankProfile.status?.status_code === 400) {
-            throw new Error(rankProfile.status.message);
+        if (data.status === 400) {
+            throw new Error(rankProfile.status?.message || 'Bad Request: Invalid data');
         }
 
         res.json({
@@ -29,7 +33,7 @@ const getRankProfile = async( req, res = response ) => {
         res.status(404).json({
             riotError: error.message,
             ok: false,
-            msg: 'summonerId not found - Invalid or non-existent puuid',
+            msg: 'summonerId not found - Invalid or non-existent summonerId',
         });
     }
 

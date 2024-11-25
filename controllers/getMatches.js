@@ -11,12 +11,21 @@ const getMatches = async( req, res = response ) => {
         const data = await fetch( url )
         const matches = await data.json()
 
-        if( matches.length === 0 ){
-            throw new Error('Summoner has not played any games recently')
+        
+        if (data.status === 400) {
+            throw new Error(matches.status?.message || 'Bad Request: Invalid data');
         }
-
-        if (matches.status?.status_code === 400) {
-            throw new Error(matches.status.message);
+        
+        if (data.status === 404) {
+            throw new Error(matches.status?.message || 'Not Found: Invalid or non-existent puuid');
+        }
+        
+        if( matches.length === 0 ){
+            return res.json({
+                matches: matches,
+                msg: 'Summoner has not played any games recently',
+                ok: true,
+            })
         }
 
         res.json({
@@ -28,22 +37,11 @@ const getMatches = async( req, res = response ) => {
 
     } catch (error) {
 
-        if( error.message === 'Summoner has not played any games recently'){
-            res.status(404).json({
-                riotError: error.message,
-                ok: false,
-                msg: 'Summoner exist but has not played any games recently'
-            })
-        }
-
-        if( error.message === `Bad Request - Exception decrypting ${puuid}`){
-
-            res.status(404).json({
-                error: error.message,
-                ok: false,
-                msg: 'matches not found - Invalid or non-existent puuid',
-            });
-        }
+        res.status(404).json({
+            riotError: error.message,
+            ok: false,
+            msg: 'Matches not found - Invalid or non-existent puuid',
+        });
 
     }
 

@@ -11,8 +11,8 @@ const getSummonerId = async( req, res = response ) => {
         const data = await fetch( url )
         const summonerLong = await data.json()
         
-        if (summonerLong.status?.status_code === 400) {
-            throw new Error(summonerLong.status.message);
+        if (data.status === 400) {
+            throw new Error(summonerLong.status?.message || 'Bad request - Exception decrypting puuid');
         }
 
         res.json({
@@ -23,7 +23,7 @@ const getSummonerId = async( req, res = response ) => {
 
 
     } catch (error) {
-        res.json({
+        res.status(404).json({
             riotError: error.message,
             ok: false,
             msg: 'summonerId not found - Invalid or non-existent puuid',
