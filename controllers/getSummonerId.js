@@ -3,17 +3,19 @@ const { response } = require('express')
 
 const getSummonerId = async( req, res = response ) => {
 
-    const { puuid } = req.query
+    const { server, puuid } = req.query
     
     try {
         
-        const url = `https://la2.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${ puuid }?api_key=${ process.env.RGAPI }`
-        const data = await fetch( url )
-        const summonerLong = await data.json()
+        const url = `https://${ server }.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${ puuid }?api_key=${ process.env.RGAPI }`
+        const response = await fetch( url )
         
-        if (data.status === 400) {
-            throw new Error(summonerLong.status?.message || 'Bad request - Exception decrypting puuid');
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.status?.message || `Error ${response.status}`);
         }
+
+        const summonerLong = await response.json()
 
         res.json({
             summonerLong: summonerLong,
